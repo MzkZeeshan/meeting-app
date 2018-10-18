@@ -9,6 +9,11 @@
   border-style: ridge;
   margin-top:30px;
 }
+.btn-outline-primary 
+{
+margin: 10px;
+
+}
 
 .App-logo {
   animation: App-logo-spin infinite 20s linear;

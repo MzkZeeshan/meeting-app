@@ -6,11 +6,26 @@ import { InputGroup, InputGroupAddon, InputGroupText, Input ,Jumbotron, Button }
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Facebooklogin from './Component/Facebooklogin/Facebooklogin'
+import Googlemap from './Component/Googlemap/Googlemap';
+import Step1 from './Component/Steps/Step1';
+import Step2 from './Component/Steps/Step2';
+import Step3 from './Component/Steps/Step3';
 class App extends Component {
+
   constructor()
   {
     super()
+    this.state={
+      user:{}
+    }
+    this.userData=this.userData.bind(this);
 
+  }
+  userData(user)
+  {
+    console.log("props",this.props);
+   this.setState({user});
+ 
 
   }
   router()
@@ -19,8 +34,11 @@ class App extends Component {
       
       <Router>
         <div>
-      <Route exact path="/" component={Facebooklogin} />
-      <Route  path="/step" component={Step1} />
+      <Route exact path="/" component={Facebooklogin}  />
+      <Route  path="/step1" component={Step1} />
+      <Route  path="/step2" component={Step2} />
+      <Route  path="/step3" component={Step3} />
+      <Route  path="/map" component={Googlemap} />
       </div>
       </Router>)
 
@@ -33,41 +51,35 @@ class App extends Component {
   }
 
   render() {
+    {
    
+{console.log("data",this.state.user)}
     return (
-        
-      <div className="App">
+     
    
-  {this.router()}
+      <div className="App">
+          { this.router()}
+          {console.log("props",this.props)}
+    {/* {!this.state.user.lenth && <Facebooklogin userData={this.userData}/>} */}
+  
+
+
       </div>
     );
   }
 }
 
-
-
-
-
-const Step1 = () => (
-  <div className="row"> 
-      <div className="col-md-4 apna offset-md-4 ">
-     <form>
-     
-  <InputGroup>
-    <InputGroupAddon addonType="prepend">Nick Name</InputGroupAddon>
-    <Input placeholder="Nick Name" />
-  </InputGroup>
-  <br/>
-  <InputGroup>
-    <InputGroupAddon addonType="prepend">Phone No</InputGroupAddon>
-    <Input placeholder="Phone No" />
-  </InputGroup>
-  <br/>
-  <Button color="primary">Next</Button>
-  </form>
-  </div>
-  </div>
-
-)
-
+}
 export default App;
+
+
+
+
+
+
+
+
+
+
+
+

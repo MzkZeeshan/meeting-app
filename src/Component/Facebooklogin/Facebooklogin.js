@@ -6,11 +6,11 @@ import { Jumbotron, Button } from 'reactstrap';
 
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
-class App extends Component {
+class Facebooklogin extends Component {
   constructor()
   {
     super()
-    this.state={}
+   
     this.Login=this.Login.bind(this);
 
   }
@@ -24,15 +24,25 @@ class App extends Component {
   {
     var provider = new firebase.auth.FacebookAuthProvider();
 
-    firebase.auth().signInWithPopup(provider).then(function(result) {
+   firebase.auth().signInWithPopup(provider).then((result)=> {
       // This gives you a Facebook Access Token. You can use it to access the Facebook API.
       var token = result.credential.accessToken;
       // The signed-in user info.
       var user = result.user;
       console.log("user",user);
       console.log("token",token);
-      this.setState({user:user})
-     
+      const user={
+        uid:user.uid,
+        displayName: user.displayName,
+        email: user.email,
+        photoURL:user.photoURL,
+        phoneNumber:user.phoneNumber
+
+
+      }
+
+    // this.props.userData(user);
+    this.props.history.push('\step1',{user});
       
       // ...
     }).catch(function(error) {
@@ -45,15 +55,17 @@ class App extends Component {
       // The firebase.auth.AuthCredential type that was used.
       var credential = error.credential;
       // ...
-    });
-
-        this.props.history.push('\step1');
+    }); 
+    
+  
+    //  this.props.history.push('\step1');
   }
   render() {
-    {console.log(this.props)}
+    {console.log("props",this.props)}
     return (
-        
       <div className="App">
+            
+     
             <Jumbotron>
         <h1 className="display-3">Meeting App</h1>
         <p className="lead">Meeting in under 5 kilo meter Clinte</p>
@@ -70,10 +82,7 @@ class App extends Component {
   }
 }
 
-export default App;
+export default Facebooklogin;
 
 
 
-const firststep=()=>{
-    alert("done")
-}
