@@ -10,7 +10,9 @@
     "react-google-maps": "^9.4.5",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.0.4",
+    "react-swipe-deck": "^0.1.17",
     "reactstrap": "^6.5.0",
+    "sweetalert": "^2.1.0",
     "tools": "0.0.0"
   },
   "scripts": {

@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import '../../App.css';
 //import firebase from './Config/firebase';
+import { Button } from 'reactstrap';
+
 
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps";
+import firebase from "../../Config/firebase";
 
 
 // https://tomchentw.github.io/react-google-maps/
@@ -21,8 +24,8 @@ class App extends Component {
 
   componentDidMount() {
     navigator.geolocation.getCurrentPosition(position => {
-      // console.log(position.coords)
-      this.setState({ coords: position.coords })
+   console.log("zeeshan",position.coords.latitude)
+      this.setState({ coords:{latitude : position.coords.latitude, longitude : position.coords.longitude }  })
 
     })
     // firebase.auth()
@@ -33,6 +36,25 @@ class App extends Component {
     // firebase.auth().signOut()
 
     // firebase.auth().onAuthStateChanged(res => console.log('res', res))
+  }
+  submitData()
+  {
+    const data= this.props.location.state;
+    data.user.coords=this.state.coords;
+    
+    console.log("final Data",data);
+    firebase.database().ref("userData").push(data)
+    .then((added) => {
+      console.log("add added",added);
+     this.props.history.push("/Dashboard",data);
+      console.log("props not Working",this.props);
+  
+
+    })
+    .catch((error) => {
+      alert("Something wrong here please contact");
+      console.log("props not Working",this.props);
+    });
   }
 
   // loginFb = () => {
@@ -80,6 +102,9 @@ class App extends Component {
           mapElement={<div style={{ height: `100%` }} />}
         />
         }
+          <br/>
+        <br/>
+        <Button color="success" onClick={()=>this.submitData()} size="lg">Submit</Button>{' '}
       </div>
     );
   }

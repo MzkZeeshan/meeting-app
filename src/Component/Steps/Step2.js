@@ -103,7 +103,7 @@ next()
   const {url,url1,url2} =this.state;
  const data= this.props.location.state;
  console.log("data in next",data);
- data.URL = [url,url1,url2];
+ data.user.URL = [url,url1,url2];
  this.props.history.push("/step3",data);
  
 }

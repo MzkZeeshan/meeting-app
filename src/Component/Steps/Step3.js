@@ -16,6 +16,13 @@ class Step3 extends Component {
     super(props);
 
     this.state = {
+      Cocktail:false,
+      Juice:false,
+      Coffee:false,
+      min120:false,
+      min20:false,
+      min60:false,
+     
     
     }
   }
@@ -24,16 +31,33 @@ class Step3 extends Component {
  {
 
  const {Cocktail,Juice,Coffee,min120,min20,min60}=this.state;
-   var data ={};
+ const bev_min ={
+  bev:{
+    
+  },
+  min:{
+
+  }
+};
  
-   Cocktail && data.bev = "Cocktail";
-   Juice && data.bev.push("Juice");
-   Coffee && data.bev.push("Coffee");
-   min120 && data.min=["120"];
-   min20 && data.min.push("20");
-   min60 && data.min.push("60");
+bev_min.bev.Cocktail = Cocktail;
+bev_min.bev.Juice = Juice;
+bev_min.bev.Coffee = Coffee;
+bev_min.min.min120 = min120;
+bev_min.min.min20 = min20;
+bev_min.min.min60 = min60;
+  //  Juice && data.bev.push("Juice");
+  //  Coffee && data.bev.push("Coffee");
+  //  min120 && data.min.push("120");
+  //  min20 && data.min.push("20");
+  //  min60 && data.min.push("60");
+  const data= this.props.location.state;
+  data.user.bevrage=bev_min.bev;
+  data.user.Minutes=bev_min.min;
+
    console.log(data);
-   //this.props.history.push("/Googlemap",data);
+   this.props.history.push("/map",data);
+
  }
   render() {
     {console.log(this.props.location.state)}
@@ -47,7 +71,7 @@ class Step3 extends Component {
      <InputGroup>
         <InputGroupAddon addonType="prepend">
           <InputGroupText>
-            <input type="checkbox" onChange={()=>this.setState({Coffee : !this.state.Coffee})}  />
+            <input type="checkbox" className="bev" onChange={()=>this.setState({Coffee : !this.state.Coffee})}  />
           </InputGroupText>
         </InputGroupAddon>
         <Input placeholder="Coffee"  />
@@ -56,7 +80,7 @@ class Step3 extends Component {
  <InputGroup>
         <InputGroupAddon addonType="prepend">
           <InputGroupText>
-            <input type="checkbox" ref="check" value="juice" onChange={()=>this.setState({Juice : !this.state.Juice})}  aria-label="Checkbox for following text input" />
+            <input type="checkbox" className="bev"  ref="check" value="juice" onChange={()=>this.setState({Juice : !this.state.Juice})}  aria-label="Checkbox for following text input" />
           </InputGroupText>
         </InputGroupAddon>
         <Input placeholder=" Juice" />
@@ -68,7 +92,7 @@ class Step3 extends Component {
  <InputGroup>
         <InputGroupAddon addonType="prepend">
           <InputGroupText>
-            <input type="checkbox" onChange={()=>this.setState({Cocktail : !this.state.Cocktail})} aria-label="Checkbox for following text input" />
+            <input type="checkbox" className="bev"  onChange={()=>this.setState({Cocktail : !this.state.Cocktail})} aria-label="Checkbox for following text input" />
           </InputGroupText>
         </InputGroupAddon>
         <Input placeholder=" Cocktail" />
@@ -118,7 +142,7 @@ class Step3 extends Component {
 
 
 
-  <Button color="primary" onClick={this.next()}>Next</Button>
+  <Button color="primary" onClick={()=>this.next()}>Next</Button>
 
 
   </form>

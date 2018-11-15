@@ -10,6 +10,8 @@ import Googlemap from './Component/Googlemap/Googlemap';
 import Step1 from './Component/Steps/Step1';
 import Step2 from './Component/Steps/Step2';
 import Step3 from './Component/Steps/Step3';
+import Dashboard from './Component/Dashboard/Dashboard'
+import Meeting from './Component/Meeting/Meeting'
 class App extends Component {
 
   constructor()
@@ -39,6 +41,8 @@ class App extends Component {
       <Route  path="/step2" component={Step2} />
       <Route  path="/step3" component={Step3} />
       <Route  path="/map" component={Googlemap} />
+      <Route  path="/Meeting" component={Meeting} />
+      <Route path="/Dashboard" component={Dashboard}/>
       </div>
       </Router>)
 

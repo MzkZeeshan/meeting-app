@@ -25,9 +25,9 @@ class Step1 extends Component {
     var phone=document.getElementById("phone").value;
     if(name != "" && phone!="")
     {
-      const data=this.props.location.state.user;
-      data.phoneNumber=phone;
-      data.name=name;
+      const data=this.props.location.state;
+      data.user.phoneNumber=phone;
+      data.user.name=name;
       this.props.history.push("/step2",data);
 
     }
