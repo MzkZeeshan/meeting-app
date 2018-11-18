@@ -6,7 +6,7 @@ import Cards, { Card } from 'react-swipe-deck'
 import { Card as Cardss, CardImg, CardText, CardBody,
     CardTitle, CardSubtitle, Button } from 'reactstrap';
     import swal from 'sweetalert';
-
+    import SlideShow from 'react-image-show';
 import firebase from "../../Config/firebase";
 
 
@@ -27,7 +27,8 @@ currentUser:[],
 venues: [],
 meetingDetails:{
   coords : {}
-}
+},
+meetingWith : {}
     }
     this.next=this.next.bind(this)
     this.card=this.card.bind(this);
@@ -109,7 +110,8 @@ next(i)
   
   setMeeting(index)
   {
-    const {userData,currentUser,venues}=this.state;
+
+    const {userData,currentUser,venues,meetingWith}=this.state;
     const a=userData[index];
     console.log("Meeting with"+a.user.name);
 // fetch( 'https://api.foursquare.com/v2/venues/search?client_id='+client_id+'&client_screat='+client_screat+'&v=20180323&limit=5&ll='+cords)
@@ -131,8 +133,12 @@ swal({
 .then((willDelete) => {
   if (willDelete) {
     
-    console.log("will delete"+willDelete);
-    this.setState({meetingWith : a.user.uid});
+    const {meetingwith} =this.state; 
+   
+
+    this.setState({ name : a.user.name,
+      uid : a.user.uid,
+      photo : a.user.photoURL});
     swal("your meeting Will be set "+a.user.displayName, {
       icon: "success",
   
@@ -176,7 +182,7 @@ swal({
 
   selectVenue(e, index) {
     const { meetingDetails, venues, navigation } = this.state;
-    meetingDetails.meetingVenue = venues[index];
+    meetingDetails.meetingVenue = venues[index].name;
     meetingDetails.coords.latitude = venues[index].lat;
     meetingDetails.coords.langitude = venues[index].lng;
     this.setState(meetingDetails);
@@ -193,15 +199,29 @@ card()
 
   
 
-        <Cards size={[500,370]}  cardSize={[500,200]} className='master-root'>
+        <Cards  size={[500,370]}  cardSize={[500,200]} className='master-root'>
 
        
        {userData.map((item,index) =>      
         <Card
          >
+         
           <div class="s">
          <Cardss>
-      <CardImg top width="100%" src={item.user.URL[1]} alt="Card image cap" />
+      {/* <CardImg top width="100%" src={item.user.URL[1]} alt="Card image cap" /> */}
+      <SlideShow
+        images={item.user.URL}
+        width="200px"
+  
+        imagesWidth="200px"
+        imagesHeight="200px"
+     imagesHeightMobile="200px"
+       // thumbnailsWidth="920px"
+       // thumbnailsHeight="12vw"
+        indicators  
+        fixedImagesHeight
+       
+      />
   
       <CardBody>
   {/* {console.log("URLS   "+item.user.URL[0]) } */}
@@ -269,23 +289,27 @@ sendRequest()
   
   var date = document.getElementById("meeting-date").value;
   alert(date +"and" + time);
-  const {meetingDetails,venues,meetingWith,currentUser}=this.state;
+  const {meetingDetails,venues,meetingWith,currentUser,name,uid,photo}=this.state;
   console.log("meeting detail",meetingDetails );
   if(time != null && date != null)
   {
     const meeting = {
     sender: currentUser.user.uid,
-    receiver: meetingWith,
+    receiver: uid,
+    receiverName: name,
+    receiverPhoto: photo,
+    senderName: currentUser.user.name,
+    senderPhoto: currentUser.user.photoURL, 
     date: date,
     time: time,
-    venue: meetingDetails.meetingVenue,
+    venue: meetingDetails,
     status: "pending"
     }
     console.log("meeting with",meeting);
-    firebase.database().ref("meetingData").push(meeting)
+    firebase.database().ref(`meetingData/${meeting.sender}`).push(meeting)
     .then((added) => {
       swal("Good job!", "You Meeting will Set", "success");
-      this.props.history.push("/Dashboard");
+      this.props.history.push("/Dashboard",this.props.location.state);
      
     
      
@@ -318,8 +342,8 @@ sendRequest()
   const data=[1,2,2]
   return (
     <div>
-    {!meetingWith && this.card()}
-    {meetingWith && this.meet()}
+    {!venues.length && this.card()}
+    {venues.length  && this.meet()}
     </div>
   )
   }
